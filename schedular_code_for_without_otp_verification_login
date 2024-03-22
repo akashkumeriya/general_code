@@ -1,0 +1,53 @@
+package demographic_data;
+import org.openqa.selenium.Cookie;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class schedular_code_for_without_otp_verification_login {
+
+    public static void main(String[] args) {
+        // Set the path to your ChromeDriver executable
+    	  System.setProperty("webdriver.chrome.driver", "/home/shatam-system-i2/chromedriver");
+
+        // Create a new instance of the ChromeDriver
+        WebDriver driver = new ChromeDriver();
+
+        // Navigate to the website where you want to set the cookies
+        driver.get("https://waterviewportal.com/");
+
+        // Manually add the cookies
+        addCookiesFromFile(driver, "/home/shatam-system-i2/Music/a1.txt");
+
+        // After adding cookies, navigate to a page where cookies are required
+        driver.get("https://waterviewportal.com/waterdistrict");
+
+        // Continue interacting with the website as needed
+
+        // Quit the WebDriver
+      //  driver.quit();
+    }
+
+    private static void addCookiesFromFile(WebDriver driver, String filePath) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split("; ");
+                String[] keyValue = parts[0].split("=");
+                String domain = parts[1].substring("domain=".length());
+
+                Cookie cookie = new Cookie.Builder(keyValue[0], keyValue[1])
+                        .domain(domain)
+                        .build();
+
+                driver.manage().addCookie(cookie);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
