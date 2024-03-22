@@ -1,0 +1,54 @@
+package demographic_data;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Cookie;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import java.io.*;
+import java.util.Set;
+
+public class create_cookie_file_on_system {
+
+    public static void main(String[] args) throws InterruptedException, IOException {
+        System.setProperty("webdriver.chrome.driver", "/home/shatam-system-i2/chromedriver");
+
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://waterviewportal.com/");
+
+        // Assuming the rest of your code to interact with the website continues from here
+        driver.findElement(By.id("email")).sendKeys("akashkumeriya23@gmail.com");
+        Thread.sleep(1000);
+        driver.findElement(By.id("pass")).sendKeys("akash#12");
+        Thread.sleep(1000);
+        driver.findElement(By.id("SignIn")).click();
+        Thread.sleep(7000);
+        
+        Thread.sleep(7000);
+        
+        Thread.sleep(7000);
+
+        // After successful login, save cookies to file in text format
+        File file = new File("/home/shatam-system-i2/Music/a1.txt");
+        FileWriter writer = new FileWriter(file);
+        BufferedWriter bufferedWriter = new BufferedWriter(writer);
+
+        Set<Cookie> cookies = driver.manage().getCookies();
+        for (Cookie cookie : cookies) {
+            bufferedWriter.write(cookie.getName() + "=" + cookie.getValue() + "; domain=" + cookie.getDomain());
+            bufferedWriter.newLine();
+        }
+
+        bufferedWriter.close();
+        writer.close();
+
+        if (file.exists() && file.length() > 0) {
+            System.out.println("Cookies stored successfully.");
+        } else {
+            System.out.println("Failed to store cookies.");
+        }
+
+        driver.quit();
+    }
+}
+
