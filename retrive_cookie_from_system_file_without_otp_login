@@ -1,0 +1,74 @@
+package demographic_data;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Cookie;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import java.util.Set;
+
+public class retrive_cookie_from_system_file_without_otp_login {
+
+    public static void main(String[] args) throws InterruptedException {
+        // Set the path to your ChromeDriver executable
+    	 System.setProperty("webdriver.chrome.driver", "/home/shatam-system-i2/chromedriver");
+
+        // Create a new instance of the ChromeDriver
+        WebDriver driver = new ChromeDriver();
+
+        // Navigate to the website where you want to set the cookies
+        driver.get("https://waterviewportal.com/");
+        
+        
+        
+  //      driver.findElement(By.id("email")).sendKeys("akashkumeriya23@gmail.com");
+  //      Thread.sleep(1000);
+  //      driver.findElement(By.id("pass")).sendKeys("akash#12");
+  //      Thread.sleep(1000);
+  //      driver.findElement(By.id("SignIn")).click();
+  //      Thread.sleep(7000);
+        
+        
+
+        // Manually add the cookies
+        addCookies(driver);
+
+        // After adding cookies, navigate to a page where cookies are required
+        driver.get("https://waterviewportal.com/waterdistrict");
+
+        // Continue interacting with the website as needed
+
+        // Quit the WebDriver
+      //  driver.quit();
+    }
+
+    private static void addCookies(WebDriver driver) {
+        // Define your cookie data
+        String[] cookieData = {
+                "ASP.NET_SessionId=15cwlkz5g5yodas4toddsemt; domain=waterviewportal.com",
+                "_ga_H4371RN7KE=GS1.1.1711100025.1.1.1711100046.0.0.0; domain=.waterviewportal.com",
+                "_ga_KN2CLSGHKL=GS1.1.1711100024.1.1.1711100046.0.0.0; domain=.waterviewportal.com",
+                "_ga=GA1.1.1973551995.1711100025; domain=.waterviewportal.com",
+                "ARRAffinitySameSite=8a1bb58ea9693743903cdab054f488457062905c981e84b7a880dadecbdb8db0; domain=.waterviewportal.com",
+                "_gat_gtag_UA_216843160_1=1; domain=.waterviewportal.com",
+                "ARRAffinity=8a1bb58ea9693743903cdab054f488457062905c981e84b7a880dadecbdb8db0; domain=.waterviewportal.com",
+                "akashkumeriya23@gmail.com=YXV0aDB8NjVkZTBhNWU1MDcyNzlkNDUyOWIyN2U3YWthc2hrdW1lcml5YTIzQGdtYWlsLmNvbUNocm9tZTcw; domain=waterviewportal.com",
+                "_gid=GA1.2.633519138.1711100025; domain=.waterviewportal.com"
+        };
+
+        // Loop through the cookie data and add each cookie to the WebDriver
+        for (String data : cookieData) {
+            String[] parts = data.split("; ");
+            String[] keyValue = parts[0].split("=");
+            String domain = parts[1].substring("domain=".length());
+
+            Cookie cookie = new Cookie.Builder(keyValue[0], keyValue[1])
+                    .domain(domain)
+                    .build();
+
+            driver.manage().addCookie(cookie);
+        }
+    }
+}
+
+
+
